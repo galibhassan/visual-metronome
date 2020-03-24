@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visual Metronome</title>
+  </head>
+  <body>
+    <div>tempo</div>
+    <input type="number" id="bpm" />
+
+    <div>time signature</div>
+    <input type="number" id="timeSignature" />
+
+    <div>
+      <button id="startButton">start</button>
+      <button id="stopButton">stop</button>
+    </div>
+
+    <script>
+      const stopButton = document.getElementById("stopButton");
+      const startButton = document.getElementById("startButton");
+      const timeSignature = document.getElementById("timeSignature");
+      const bpm = document.getElementById("bpm");
+
+      bpm.value = 120;
+      timeSignature.value = 4;
+
+      const getInterval = bpm => {
+        return (1000 * 60) / bpm;
+      };
+
+      const startMetronome = bpm => {
+        const interval = getInterval(bpm);
+        console.log(interval);
+        let counter = 0;
+
+        window.myTimer = setInterval(() => {
+          counter++;
+          console.log(counter, counter % 4);
+          if (counter % 4 === 1) {
+            document.body.style.backgroundColor = "rgb(0,0,0)";
+          } else if (counter % 4 === 2) {
+            document.body.style.backgroundColor = `rgb(${(255 / 100) * 33}, ${(255 / 100) * 33}, ${(255 / 100) * 33})`;
+          } else if (counter % 4 === 3) {
+            document.body.style.backgroundColor = `rgb(${(255 / 100) * 67}, ${(255 / 100) * 67}, ${(255 / 100) * 67})`;
+          } else {
+            document.body.style.backgroundColor = `rgb(${(255 / 100) * 100}, ${(255 / 100) * 100}, ${(255 / 100) *
+              100})`;
+          }
+        }, interval);
+      };
+
+      stopButton.addEventListener("click", function() {
+        clearInterval(window.myTimer);
+      });
+
+      startButton.addEventListener("click", () => {
+        clearInterval(window.myTimer);
+        startMetronome(bpm.value);
+      });
+    </script>
+  </body>
+</html>
